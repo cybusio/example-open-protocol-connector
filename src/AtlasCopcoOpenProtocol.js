@@ -51,7 +51,8 @@ class AtlasCopcoOpenProtocol extends EventEmitter {
 
   async subscribe ({ name }, id) {
     if (this._subscriptions.has(id)) return
-
+    if (!name) throw new Error('The endpoint address should contain a name.')
+    
     const callback = (data) => this.emit(id, data)
 
     this._subscriptions.set(id, {
