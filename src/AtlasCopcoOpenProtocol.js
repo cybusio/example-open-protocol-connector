@@ -23,6 +23,8 @@ class AtlasCopcoOpenProtocol extends EventEmitter {
     this._options = Object.assign(defaultOptions, params.options)
 
     this._subscriptions = new Map()
+
+    this._connected = false
   }
 
   async connect() {
@@ -32,13 +34,19 @@ class AtlasCopcoOpenProtocol extends EventEmitter {
           resolve(data)
         })
     })
+    this._connected = true
     this.emit('connected')
   }
 
   async disconnect() {
     this._client.close()
     this._client = undefined
+    this._connected = false
     this.emit('disconnected')
+  }
+
+  async isConnected () {
+    return this._connected
   }
 
   async subscribe ({ name }, id) {
@@ -58,7 +66,7 @@ class AtlasCopcoOpenProtocol extends EventEmitter {
 
   async unsubscribe (id) {
     if (!this._subscriptions.has(id)) return
-    
+
     const { name, callback } = this._subscriptions.get(id)
     this._subscriptions.delete(id)
 
