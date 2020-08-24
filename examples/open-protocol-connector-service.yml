@@ -1,4 +1,4 @@
-description: !sub 'Atlas Copco Open Protocol Connector for device ${atlasCopcoDeviceId}' 
+description: !sub 'Atlas Copco Open Protocol Connector for device ${atlasCopcoDeviceId}'
 
 metadata:
 
@@ -20,14 +20,14 @@ parameters:
     description: Port of the Atlas Copco device
     default: 4545
 
-definitions: 
+definitions:
 
   vrpcDomain: atlas-copco.vrpc
   vrpcAgent: atlas-copco.open-protocol.connector
   vrpcClass: AtlasCopcoOpenProtocol
 
 resources:
-  
+
   openProtocolConnector:
     type: Cybus::Container
     properties:
@@ -40,7 +40,7 @@ resources:
         VRPC_DOMAIN: !ref vrpcDomain
         VRPC_AGENT: !ref vrpcAgent
       restart: unless-stopped
-  
+
   openProtocolConnection:
     type: Cybus::Connection
     properties:
@@ -50,7 +50,7 @@ resources:
           domain: !ref vrpcDomain
           agent: !ref vrpcAgent
           className: !ref vrpcClass
-        constructor:
+        args:
           host: !ref atlasCopcoDeviceHost
           port: !ref atlasCopcoDevicePort
 
