@@ -30,9 +30,7 @@ class AtlasCopcoOpenProtocol extends EventEmitter {
   async connect() {
     await new Promise(resolve => {
       this._client = openProtocol.createClient(this._connection.port,
-        this._connection.host, this._options, (data) => {
-          resolve(data)
-        })
+        this._connection.host, this._options, resolve)
     })
     this._connected = true
     this.emit('connected')
@@ -52,7 +50,7 @@ class AtlasCopcoOpenProtocol extends EventEmitter {
   async subscribe ({ name }, id) {
     if (this._subscriptions.has(id)) return
     if (!name) throw new Error('The endpoint address should contain a name.')
-    
+
     const callback = (data) => this.emit(id, data)
 
     this._subscriptions.set(id, {
